@@ -6,13 +6,13 @@ from langchain.tools import BaseTool
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from pydantic import Field, BaseModel
+from typing import List
 
 # Function to get student data from the CSV file and return the first match as a dictionary
 def get_student_data(student):
     data = pd.read_csv("docs/students.csv")
     # Find the row where the username matches
     student_data = data[data["USUARIO"] == student]
-    print('Dados:', student_data)
     if student_data.empty:
         return {}
     return student_data.iloc[:1].to_dict()
@@ -49,7 +49,6 @@ class StudentDataTool(BaseTool):
         # Running the chain: prompt -> LLM -> parser
         chain = template | llm | parser
         response = chain.invoke({"input": input})
-        print("[DEBUG] LLM extraction response:", response)  # Debug print
         student = response['student'].lower()
 
         # Get the student data from the CSV
@@ -57,3 +56,57 @@ class StudentDataTool(BaseTool):
 
         # Return the data as JSON
         return json.dumps(data)
+
+# Represents a grade for a specific knowledge area
+class Grade(BaseModel):
+    area: str = Field("Name of the knowledge area")
+    grade: float = Field("Grade in the knowledge area")
+
+# Represents the academic profile of a student, including name, graduation year, grades, and a summary
+class StudentAcademicProfile(BaseModel):
+    name: str = Field("Student's name")
+    graduation_year: int = Field("Year of graduation")
+    grades: List[Grade] = Field("List of grades for subjects and knowledge areas")
+    summary: str = Field("Summary of the main characteristics that make this student unique and a great potential candidate for universities. Example: only this student has ...")
+
+# Tool that uses the LLM to generate an academic profile for a student based on their data
+class AcademicProfile(BaseTool):
+    name: str = "AcademicProfile"
+    description: str = (
+        """Creates an academic profile for a student.\n"
+        "This tool requires all student data as input."""
+    )
+
+    def _run(self, input: str) -> str:
+        # Create the LLM with Azure credentials
+        llm = AzureChatOpenAI(
+            azure_deployment="gpt-4.1-mini",
+            openai_api_version=os.getenv("AZURE_OPENAI_API_VERSION"),
+            openai_api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+            azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT")
+        )
+
+        # Set up the output parser for the academic profile
+        parser = JsonOutputParser(pydantic_object=StudentAcademicProfile)
+
+        # Prompt to instruct the LLM to create the academic profile
+        template = PromptTemplate(
+            template = """
+            - Format the student data into an academic profile.
+            - With the data, identify suggested university options and courses that match the student's interests.
+            - Highlight the student's profile, focusing on what makes sense for the student's target institutions.
+
+            Persona: You are a career consultant and need to give detailed, rich, but direct advice to the student about options and possible consequences.
+            Current information:
+
+            {student_data}
+            {output_format}
+            """,
+            input_variables=["student_data"],
+            partial_variables={"output_format": parser.get_format_instructions()}
+        )
+
+        # Run the chain: prompt -> LLM -> parser
+        chain = template | llm | parser
+        response = chain.invoke({"student_data": input})
+        return response

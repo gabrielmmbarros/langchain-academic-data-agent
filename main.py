@@ -5,8 +5,9 @@ from agent import OpenAIFunctionsAgent
 # Load environment variables from .env file
 load_dotenv()
 
-# Example question with two students
+# Example questions
 question = "What are the data for Ana and Bianca?"
+question = "Make an academic profile for Ana"
 
 # Create the agent
 agent = OpenAIFunctionsAgent()

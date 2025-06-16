@@ -3,7 +3,7 @@ from langchain.agents import create_openai_tools_agent
 from langchain import hub
 from langchain.agents import Tool
 import os
-from student import StudentDataTool
+from student import AcademicProfile, StudentDataTool
 
 class OpenAIFunctionsAgent:
     def __init__(self):
@@ -15,13 +15,20 @@ class OpenAIFunctionsAgent:
             azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT")
         )   
 
-        # Create the tool for getting student data
+        # Create the tool for getting tools from student file
         student_data_tool = StudentDataTool()
+        academic_profile = AcademicProfile()
+
         self.tools = [
             Tool(
                 name=student_data_tool.name,
                 func=student_data_tool.run,
                 description=student_data_tool.description
+            ),
+            Tool(
+                name=academic_profile.name,
+                func=academic_profile.run,
+                description=academic_profile.description
             )
         ]
 
