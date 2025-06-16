@@ -24,32 +24,13 @@ class StudentExtractor(BaseModel):
 # Tool that uses the LLM to extract the student name and get their data
 class StudentDataTool(BaseTool):
     name: str = "StudentDataTool"
-    description: str = "Tool to get a student's data from the database."
+    description: str = """
+    Tool to get a student's data from the database.
+    The argument of this tool is the student's name.
+    """
 
     def _run(self, input: str) -> str:
-        # Create the LLM with Azure credentials
-        llm = AzureChatOpenAI(
-            azure_deployment="gpt-4.1-mini",
-            openai_api_version=os.getenv("AZURE_OPENAI_API_VERSION"),
-            openai_api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-            azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT")
-        )
-
-        # Set up the output parser to extract the student name
-        parser = JsonOutputParser(pydantic_object=StudentExtractor)
-
-        template = PromptTemplate(
-            template="""You should analyze the {input} and extract the provided username.
-                Output format:
-                {output_format}""",
-            input_variables=["input"],
-            partial_variables={"output_format": parser.get_format_instructions()}
-        )
-
-        # Running the chain: prompt -> LLM -> parser
-        chain = template | llm | parser
-        response = chain.invoke({"input": input})
-        student = response['student'].lower()
+        student = input.lower()
 
         # Get the student data from the CSV
         data = get_student_data(student)
@@ -73,8 +54,11 @@ class StudentAcademicProfile(BaseModel):
 class AcademicProfile(BaseTool):
     name: str = "AcademicProfile"
     description: str = (
-        """Creates an academic profile for a student.\n"
-        "This tool requires all student data as input."""
+        """Creates an academic profile for a student."
+        "This tool requires all student data as input.
+        "I am unable to fetch the student's data.
+        You need to fetch the student's data before calling me.
+        """
     )
 
     def _run(self, input: str) -> str:

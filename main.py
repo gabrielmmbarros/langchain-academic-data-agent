@@ -8,6 +8,7 @@ load_dotenv()
 # Example questions
 question = "What are the data for Ana and Bianca?"
 question = "Make an academic profile for Ana"
+question = "Compare the academic profiles of Ana and Bianca"
 
 # Create the agent
 agent = OpenAIFunctionsAgent()
