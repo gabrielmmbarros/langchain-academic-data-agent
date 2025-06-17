@@ -30,7 +30,37 @@ class StudentDataTool(BaseTool):
     """
 
     def _run(self, input: str) -> str:
-        student = input.lower()
+        # Create the LLM with Azure credentialsAdd commentMore actions
+        llm = AzureChatOpenAI(
+            azure_deployment="gpt-4.1-mini",
+            openai_api_version=os.getenv("AZURE_OPENAI_API_VERSION"),
+            openai_api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+            azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT")
+        )
+
+        # Set up the output parser to extract the student name
+        parser = JsonOutputParser(pydantic_object=StudentExtractor)
+
+        template = PromptTemplate(
+            template="""
+                You have to analyze the following input and extract the provided name, in lower case.
+                INPUT:
+                --------------------
+                {input}
+                --------------------
+                Output format:
+                {output_format}
+                """,
+            input_variables=["input"],
+            partial_variables={"output_format": parser.get_format_instructions()}
+        )
+
+        # Running the chain: prompt -> LLM -> parser
+        chain = template | llm | parser
+
+        response = chain.invoke({"input": input})
+        student = response['student']
+        student = student.lower().strip()
 
         # Get the student data from the CSV
         data = get_student_data(student)

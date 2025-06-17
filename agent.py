@@ -1,5 +1,5 @@
 from langchain_openai import AzureChatOpenAI
-from langchain.agents import create_openai_tools_agent
+from langchain.agents import create_openai_tools_agent, create_react_agent
 from langchain import hub
 from langchain.agents import Tool
 import os
@@ -33,6 +33,9 @@ class OpenAIFunctionsAgent:
         ]
 
         # Load the OpenAI functions agent prompt from the LangChain Hub
-        prompt = hub.pull("hwchase17/openai-functions-agent")
+        #prompt = hub.pull("hwchase17/openai-functions-agent")
+        prompt = hub.pull("hwchase17/react")
+
         # Create the agent with the LLM, tools, and prompt
-        self.agent = create_openai_tools_agent(llm, self.tools, prompt)
+        #self.agent = create_openai_tools_agent(llm, self.tools, prompt)
+        self.agent = create_react_agent(llm, self.tools, prompt)
