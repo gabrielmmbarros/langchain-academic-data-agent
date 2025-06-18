@@ -75,8 +75,8 @@ class UniversityDataTool(BaseTool):
         return json.dumps(data)
     
 # Tool to load all universities data
-class AllUniversities(BaseTool):
-    name: str = "AllUniversities"
+class AllUniversitiesTool(BaseTool):
+    name: str = "AllUniversitiesTool"
     description: str = """Loads the data of all universities. No input parameter is required."""
 
     def _run(self, input: str):

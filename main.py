@@ -11,6 +11,7 @@ question = "Make an academic profile for Ana"
 question = "Compare the academic profiles of Ana and Bianca"
 question = "Give the data for USP"
 question = "Between USP and UFRJ, which one has the best option for Bianca?"
+question = "Besides Ana's favorite universities, there are other universities as well. Consider them too. Which colleges does Ana have the best chance of getting into?"
 
 # Create the agent
 agent = OpenAIFunctionsAgent()

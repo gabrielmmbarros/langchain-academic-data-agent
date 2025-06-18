@@ -1,57 +1,69 @@
-![Capa do curso LangChain: desenvolva agente de inteligência artificial em Python](https://github.com/alura-cursos/3860-langchain-agentes-python/assets/3330769/baa2a716-78a4-4746-acb6-5714aced2612)
 
+## LangChain - Academic Data Agent
 
-![](https://img.shields.io/github/license/alura-cursos/android-com-kotlin-personalizando-ui)
+## 🔨 What does this project do?
 
-# Titulo do projeto
+This project is a set of assistants (agents) that help you find the best universities for different student profiles. We built it in Python using LangChain and OpenAI's language model (LLM). The main steps are:
 
-3860 - LangChain: desenvolva agentes de inteligência artificial
+1. Get user data
+2. Create a user profile
+3. Find universities that match the profile
 
-## 🔨 Funcionalidades do projeto
-
-Neste projeto desenvolvemos um conjunto de assistentes que permitem auxiliar no processo de identificação de universidades para perfis específicos de estudantes. Para isso, implementamos uma solução em Python, utilizando LangChain e a LLM da OpenAI. Nesta abordagem, criamos um conjunto de agentes para (i) recuperar dados do usuário (ii) gerar um perfil do usuário e (iii) identificar universidades que combinam com este perfil. Além disso, implementamos um hub par agestão dos agentes e ferramentas criadas.
+There is also a hub to manage all the agents and tools.
 
 ![](img/amostra.gif)
 
-## ✔️ Técnicas e tecnologias utilizadas
+## ✔️ Main Technologies Used
 
-As técnicas e tecnologias utilizadas pra isso são:
+We used these main tools and techniques:
 
-- Programação Orientada à Objetos em Python
-- Uso de API GPT OpenAI
-- Uso de cadeias, com LangChain
-- Uso de agentes OpenAI
-- Uso de Agentes ReAct
-- Leitura de arquivos CSV e manipulação de dados
+- Python Object-Oriented Programming (OOP)
+- OpenAI GPT API
+- LangChain chains
+- OpenAI Agents
+- ReAct Agents
+- Reading and working with CSV files
 
+## 🛠️ How to Run the Project
 
-## 🛠️ Abrir e rodar o projeto
+After downloading the project, open it in Visual Studio Code (or another code editor). Then, set up your environment:
 
-Após baixar o projeto, você pode abrir com Visual Studio Code. Em seguida, é necessário que você prepare seu ambiente. Para isso:
-
-### venv no Windows:
+### Create a virtual environment on Windows:
 
 ```bash
 python -m venv venv-langchain2
 venv-langchain2\Scripts\activate
 ```
 
-### venv no Mac/Linux:
+### Create a virtual environment on Mac/Linux:
 
 ```bash
 python3 -m venv venv-langchain2
 source venv-langchain2/bin/activate
 ```
 
-Em seguida, instale os pacotes utilizando:
+Next, install the required packages:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## 🔑 Gerar API_KEY e associar ao .env
+## 🔑 Set your API Key
 
-```python
-OPENAI_API_KEY = "SUA_CHAVE_AQUI"
+You need an OpenAI API key. Create a file called `.env` in the project folder and add this line:
+
 ```
+OPENAI_API_KEY=your_api_key_here
+```
+
+Replace `your_api_key_here` with your real OpenAI API key.
+
+## 📁 Data Files
+
+The project uses CSV files with student and university data. You can find them in the `docs/` folder:
+
+- `students.csv`: Example student profiles
+- `universities.csv`: Example university data
+
+Feel free to add or edit data in these files to test different scenarios.
 
