@@ -3,7 +3,7 @@
 
 ## 🔨 What does this project do?
 
-This project is a set of assistants (agents) that help you find the best universities for different student profiles. We built it in Python using LangChain and OpenAI's language model (LLM). The main steps are:
+This project is a set of assistants (agents) that helps to find the best universities for different student profiles. Built in Python using LangChain and OpenAI's language model (LLM). The main steps are:
 
 1. Get user data
 2. Create a user profile
