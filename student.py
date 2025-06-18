@@ -9,7 +9,7 @@ from pydantic import Field, BaseModel
 from typing import List
 
 # Function to get student data from the CSV file and return the first match as a dictionary
-def get_student_data(student):
+def get_student_data(student: str):
     data = pd.read_csv("docs/students.csv")
     # Find the row where the username matches
     student_data = data[data["USUARIO"] == student]
@@ -19,7 +19,7 @@ def get_student_data(student):
 
 # Model to help the LLM extract the student's name from the question
 class StudentExtractor(BaseModel):
-    student: str = Field("The student's username, exactly as in the USUARIO column, all lowercase, no accents or extra spaces. Example: john, carlos, joana, carla.")
+    student: str = Field("The student's username, exactly as in the USUARIO column, all lowercase, no accents or extra spaces.")
 
 # Tool that uses the LLM to extract the student name and get their data
 class StudentDataTool(BaseTool):
@@ -30,7 +30,7 @@ class StudentDataTool(BaseTool):
     """
 
     def _run(self, input: str) -> str:
-        # Create the LLM with Azure credentialsAdd commentMore actions
+        # Create the LLM with Azure credentials
         llm = AzureChatOpenAI(
             azure_deployment="gpt-4.1-mini",
             openai_api_version=os.getenv("AZURE_OPENAI_API_VERSION"),

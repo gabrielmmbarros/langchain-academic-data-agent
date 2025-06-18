@@ -4,6 +4,7 @@ from langchain import hub
 from langchain.agents import Tool
 import os
 from student import AcademicProfile, StudentDataTool
+from university import UniversityDataTool
 
 class OpenAIFunctionsAgent:
     def __init__(self):
@@ -18,6 +19,7 @@ class OpenAIFunctionsAgent:
         # Create the tool for getting tools from student file
         student_data_tool = StudentDataTool()
         academic_profile = AcademicProfile()
+        university_data = UniversityDataTool()
 
         self.tools = [
             Tool(
@@ -29,6 +31,11 @@ class OpenAIFunctionsAgent:
                 name=academic_profile.name,
                 func=academic_profile.run,
                 description=academic_profile.description
+            ),
+            Tool(
+                name=university_data.name,
+                func=university_data.run,
+                description=university_data.description
             )
         ]
 

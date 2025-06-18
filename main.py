@@ -6,9 +6,11 @@ from agent import OpenAIFunctionsAgent
 load_dotenv()
 
 # Example questions
-question = "What are the data for Ana and Bianca?"
+question = "Give me the data for Ana and Bianca."
 question = "Make an academic profile for Ana"
 question = "Compare the academic profiles of Ana and Bianca"
+question = "Give the data for USP"
+question = "Between USP and UFRJ, which one has the best option for Bianca?"
 
 # Create the agent
 agent = OpenAIFunctionsAgent()
